@@ -1,0 +1,10 @@
+name: ScottySigns
+main: io.github.redwallhp.scottysigns.ScottySigns
+description: Beam up when you interact with a sign
+version: ${project.version}
+
+commands:
+    scottysign-set:
+        description: Add a transporter sign
+        usage: /scottysign-set world x y z
+        permission: scottysign.set
