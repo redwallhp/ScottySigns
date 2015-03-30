@@ -8,3 +8,11 @@ commands:
         description: Add a transporter sign
         usage: /scottysign-set world x y z
         permission: scottysign.set
+    scottysign-info:
+        description: Inspect a transporter sign
+        usage: /scottysign-info
+        permission: scottysign.info
+    scottysign-remove:
+        description: Remove a transporter sign
+        usage: /scottysign-remove
+        permission: scottysign.remove

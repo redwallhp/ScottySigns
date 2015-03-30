@@ -74,6 +74,28 @@ public final class ScottySigns extends JavaPlugin implements Listener {
         }
 
 
+        if (cmd.getName().equalsIgnoreCase("scottysign-info")) {
+            this.inspectScottySign(sender);
+            return true;
+        }
+
+
+        if (cmd.getName().equalsIgnoreCase("scottysign-remove")) {
+
+            Block block = player.getTargetBlock((HashSet<Byte>) null, 5);
+
+            if (block.getType() != Material.SIGN_POST && block.getType() != Material.WALL_SIGN) {
+                sender.sendMessage(ChatColor.RED + "You must be looking at a sign.");
+                return true;
+            }
+
+            this.removeScottySign(block);
+            sender.sendMessage(ChatColor.GOLD + "ScottySign unregistered");
+            return true;
+
+        }
+
+
         return false;
 
 
@@ -150,6 +172,50 @@ public final class ScottySigns extends JavaPlugin implements Listener {
 
         System.out.println(block.toString());
 
+    }
+
+
+
+    public void inspectScottySign(CommandSender sender) {
+
+        Player player = (Player) sender;
+        Block block = player.getTargetBlock((HashSet<Byte>) null, 5);
+
+        if (block.getType() != Material.SIGN_POST && block.getType() != Material.WALL_SIGN) {
+            sender.sendMessage(ChatColor.RED + "You must be looking at a sign.");
+        }
+
+        Map<?,?> scottySign = getScottySign(block.getWorld().getName(), block.getX(), block.getY(), block.getZ());
+        if (scottySign != null) {
+            String world = scottySign.get("targetWorld").toString();
+            String x = scottySign.get("targetX").toString();
+            String y = scottySign.get("targetY").toString();
+            String z = scottySign.get("targetZ").toString();
+            String msg = String.format("World: %s, X: %s, Y: %s, Z: %s", world, x, y, z);
+            sender.sendMessage(ChatColor.LIGHT_PURPLE + msg);
+        } else {
+            sender.sendMessage(ChatColor.RED + "That's not a ScottySign.");
+        }
+
+    }
+
+
+
+    public void removeScottySign(Block block) {
+        String world = block.getWorld().getName();
+        Integer x = block.getX();
+        Integer y = block.getY();
+        Integer z = block.getZ();
+        for (Iterator<Map<?,?>> iterator = this.signs.iterator(); iterator.hasNext();) {
+            Map map = iterator.next();
+            if (map.get("signWorld").equals(world)) {
+                if (map.get("signX").equals(x) && map.get("signY").equals(y) && map.get("signZ").equals(z)) {
+                    iterator.remove();
+                }
+            }
+        }
+        this.signStore.set("signs", this.signs);
+        this.saveSignStore();
     }
 
 
