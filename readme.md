@@ -1,4 +1,4 @@
-# LolNeigh
+# ScottySigns
 
 <img align="right" src="http://i.imgur.com/OY3hr5j.jpg">
 
