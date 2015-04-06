@@ -16,3 +16,7 @@ commands:
         description: Remove a transporter sign
         usage: /scottysign-remove
         permission: scottysign.remove
+    scottysign-reload:
+        description: Reload ScottySigns
+        usage: /scottysign-reload
+        permission: scottysign.reload

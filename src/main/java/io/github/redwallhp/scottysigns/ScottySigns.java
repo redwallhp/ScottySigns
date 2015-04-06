@@ -31,12 +31,21 @@ public final class ScottySigns extends JavaPlugin implements Listener {
     public void onEnable() {
         this.getServer().getPluginManager().registerEvents(this, this);
         this.loadSignStore();
+        this.verifySignIntegrity();
     }
 
 
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+
+
+        if (cmd.getName().equalsIgnoreCase("scottysign-reload")) {
+            this.loadSignStore();
+            this.verifySignIntegrity();
+            sender.sendMessage(ChatColor.GOLD + "ScottySigns reloaded");
+            return true;
+        }
 
 
         if (!(sender instanceof Player)) {
@@ -170,8 +179,6 @@ public final class ScottySigns extends JavaPlugin implements Listener {
         this.signStore.set("signs", this.signs);
         this.saveSignStore();
 
-        System.out.println(block.toString());
-
     }
 
 
@@ -216,6 +223,37 @@ public final class ScottySigns extends JavaPlugin implements Listener {
         }
         this.signStore.set("signs", this.signs);
         this.saveSignStore();
+    }
+
+
+
+    public void verifySignIntegrity() {
+
+        List<Block> toRemove = new ArrayList<Block>();
+
+        // Check the world for orphan signs (e.g. WorldEdit removals)
+        for (Map map : this.signs) {
+            World world = Bukkit.getWorld(map.get("signWorld").toString());
+            Integer x = ((Integer) map.get("signX"));
+            Integer y = ((Integer) map.get("signY"));
+            Integer z = ((Integer) map.get("signZ"));
+            Block block = world.getBlockAt(x, y ,z);
+            if (block.getType() != Material.SIGN_POST && block.getType() != Material.WALL_SIGN) {
+                // this ScottySign record no longer matches a sign in the world
+                toRemove.add(block);
+                String msg = String.format("[ScottySigns] Sign (x: %d, y: %d, z: %d) no longer exists and will be unregistered.", x, y, z);
+                Bukkit.getLogger().info(msg);
+            }
+        }
+
+        // Unregister detected orphan signs
+        for (Block block : toRemove) {
+            this.removeScottySign(block);
+        }
+        if (toRemove.size() > 0) {
+            Bukkit.getLogger().info(String.format("[ScottySigns] Unregistered %d sign(s).", toRemove.size()));
+        }
+
     }
 
 
