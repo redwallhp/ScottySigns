@@ -3,6 +3,16 @@ main: io.github.redwallhp.scottysigns.ScottySigns
 description: Beam up when you interact with a sign
 version: ${project.version}
 
+permissions:
+    scottysign.set:
+        description: Allows a player to create ScottySigns
+    scottysign.info:
+        description: Allows a player to inspect ScottySigns
+    scottysign.remove:
+        description: Allows a player to remove ScottySigns
+    scottysign.reload:
+        description: Allows a player to reload the ScottySigns plugin
+
 commands:
     scottysign-set:
         description: Add a transporter sign

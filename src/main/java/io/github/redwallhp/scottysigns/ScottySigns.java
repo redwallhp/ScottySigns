@@ -52,14 +52,7 @@ public final class ScottySigns extends JavaPlugin implements Listener {
             sender.sendMessage(ChatColor.RED + "You must be a player to do that.");
             return true;
         }
-
         Player player = (Player) sender;
-
-
-        if (!player.hasPermission("scottysigns.admin")) {
-            sender.sendMessage(ChatColor.RED + "You do not have permission to do that.");
-            return true;
-        }
 
 
         if (cmd.getName().equalsIgnoreCase("scottysign-set")) {
