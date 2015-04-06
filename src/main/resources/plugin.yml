@@ -17,6 +17,7 @@ commands:
     scottysign-set:
         description: Add a transporter sign
         usage: /scottysign-set world x y z
+        aliases: [setwarpsign]
         permission: scottysign.set
     scottysign-info:
         description: Inspect a transporter sign
@@ -25,6 +26,7 @@ commands:
     scottysign-remove:
         description: Remove a transporter sign
         usage: /scottysign-remove
+        aliases: [delwarpsign]
         permission: scottysign.remove
     scottysign-reload:
         description: Reload ScottySigns
